@@ -1,15 +1,14 @@
 # material.vifm
 [Vifm](https://github.com/vifm/vifm/) colorscheme that mimics appearance of [material.vim](https://github.com/kaicataldo/material.vim)/[material.nvim](https://github.com/marko-cerovac/material.nvim)
+- Standalone:
+![Preview image 1](preview.jpg)
 
-preview.jpg
-
-Preview of Vifm inside Nvim with [fm-nvim](https://github.com/is0n/fm-nvim)
-
-fm-nvim.jpg
+- Inside Nvim with [fm-nvim](https://github.com/is0n/fm-nvim):
+![Preview image 2](fm-nvim.jpg)
 
 ## Installation
-- move `colors/material.vifm` from this repo to `~/.config/vifm/colors/`
-- read `vifmrc` to see some recommended configurations and how to make fileviewser more colorful
+- move [colors/material.vifm](https://github.com/mahor1221/material.vifm/blob/master/colors/material.vifm) to `~/.config/vifm/colors/`
+- read [vifmrc](https://github.com/mahor1221/material.vifm/blob/master/vifmrc) to see some recommended configurations and how to make fileviewser more colorful
 - set your terminal to use material colors. example config for `~/.config/alacritty/alacritty.yml`:
 
 ```yaml
