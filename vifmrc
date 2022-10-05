@@ -1,0 +1,147 @@
+colorscheme material
+
+" change status line depending on the windows width size
+highlight User1 ctermbg=6 ctermfg=black
+highlight User2 ctermbg=none ctermfg=6
+highlight User3 ctermbg=none
+if &columns > 160
+    vsplit | view!
+    "set viewcolumns=-{name}..,7{size},21{mtime},12{perms},7{uname}..,-7{gname}..
+    set viewcolumns=-{name}..,7{size},12{perms},7{uname}..,-7{gname}..
+    set statusline="%1* %t %2*%3* %{filetype('.')} %T %= %a / %c  %d %2*%1* %E "
+    ""
+elseif &columns > 80
+    view | only
+    set viewcolumns=-{name}..,7{size},12{perms},7{uname}..,-7{gname}..
+    set statusline="%1* %t %2*%3* %{filetype('.')} %T %N%= %a / %c  %d %2*%1* %E "
+else
+    view | only
+    set viewcolumns=-{name}..,
+    set statusline=" "
+    set rulerformat=" "
+endif
+
+" remove previous directory double dot indication
+set dotdirs=""
+
+" create a new file with the name passed as argument
+" if the last character of the name is "/" it will create a directory
+command create :
+\|  let $last_char = expand(system('str="%a"; echo "${str: -1}"'))
+\|  if $last_char != '/'
+\|    touch '%a'
+\|  else
+\|    mkdir '%a'
+\|  endif
+
+" toggle vertical split file viewer
+command toggle :
+\|  if layoutis('only')
+\|    restart
+\|  else
+\|    view
+\|    only
+\|  endif
+
+noremap <space> <c-w>w
+noremap <c-b> :toggle<cr>
+noremap R :restart<cr>
+nnoremap a  :create<space>
+nnoremap I  cw<c-a>
+nnoremap A  cw
+
+fileviewer <text/troff>,{*.[1-8]}, man ./%c | col -b
+fileviewer <application/x-bittorrent>.{*.torrent}, dumptorrent -v %c
+fileviewer *.zip,*.jar,*.war,*.ear,*.oxt,*.vsix zip -sf %c
+fileviewer *.tgz,*.gz tar -tzf %c
+fileviewer *.bz2,*.tbz2 tar -tjf %c
+fileviewer *.xz,*.txz tar -tJf %c
+fileviewer *.zst,*.tzst tar -t --zstd -f %c
+fileviewer <application/x-tar>,{*.tar}, tar -tf %c
+fileviewer <application/x-rar>,{*.rar}, unrar v %c
+fileviewer <application/x-7z-compressed>,{*.7z}, 7z l %c
+
+" colorful previews
+fileviewer <application/octet-stream>,{*.iso,*.qcow2}
+    \ hexyl --border=none --length=1MiB %c
+fileviewer .*/ tree --dirsfirst -CqL 2 %c | tail -n +2
+fileviewer */ tree --dirsfirst -CqL 2 %c | tail -n +2
+fileviewer * highlight -O xterm256 -s base16/material-palenight %c
+
+" ------------------------------------------------------------------------------
+" a few commands not related to material.vifm. I didn't remove them in case
+" somebody was interseted. completely optional
+" ------------------------------------------------------------------------------
+
+" open with the program passed as argument
+command open :!nohup %a %%c &>/dev/null & disown && exit
+
+command cdgit :
+\|  let $file = system('git rev-parse --git-dir 2>/dev/null')
+\|  if $file != ''
+\|    execute 'cd' fnameescape($file)
+\|  endif
+command cdgithub :
+\|  let $file = system('
+  \   readlink -e "$(git rev-parse --git-dir 2>/dev/null)/../.github"
+  \   ')
+\|  if $file != ''
+\|    execute 'cd' fnameescape($file)
+\|  endif
+command editgitignore :
+\|  let $file = system('
+  \   readlink -e "$(git rev-parse --git-dir 2>/dev/null)/../.gitignore"
+  \   ')
+\|  if $file != ''
+\|    execute 'edit' fnameescape($file)
+\|  endif
+command editgitconfig :
+\|  let $file = system('
+  \   readlink -e "$(git rev-parse --git-dir 2>/dev/null)/config"
+  \   ')
+\|  if $file != ''
+\|    execute 'edit' fnameescape($file)
+\|  endif
+
+command! fzfcd :set noquickview
+\|  let $file = term('
+  \   file="$(find | fzf 2>/dev/tty)";
+  \   if [ -f "$file" ]; then
+  \     file="$(dirname "$file")";
+  \   fi;
+  \   echo "$file";
+  \ ')
+\|  if $file != ''
+\|    execute 'cd' fnameescape($file)
+\|  endif
+
+" ------------------------------------------------------------------------------
+" popular keybindings for File Managers (Thunar, windows file explorer, etc)
+nnoremap <c-p> cp
+vnoremap <c-p> cp
+nnoremap <c-f> :fzfcd | view!<cr>
+" yank selection then copy their names to clipboard
+nnoremap <c-c> :yank<cr>:!echo %f:p | xclip -selection clipboard %i<cr>
+vnoremap <c-c> :yank<cr>gv<cr>:!echo %f:p | xclip -selection clipboard %i<cr>
+nnoremap <c-x> :delete<cr>
+vnoremap <c-x> :delete<cr>
+nnoremap <c-v> :put<cr>
+nnoremap <c-l> :cd<space>
+nnoremap <c-h> za
+" copy file name to clipboard then rename. only works on single file selection
+nnoremap <F2>  :!echo -n %c | xclip -selection clipboard %i<cr>cw<c-u>
+vnoremap <F2>  cw
+
+nnoremap ,h :help<cr>
+nnoremap ,i :editgitignore<cr>
+nnoremap ,g :editgitconfig<cr>
+nnoremap ,G :edit $HOME/.config/git/config<cr>
+nnoremap ,V :write | edit $MYVIFMRC | restart full<cr>
+
+nnoremap 'g :cdgit<cr>
+nnoremap 'G :cdgithub<cr>
+nnoremap '/ :cd /<cr>
+" mount/unmount or cd to usb, external hard drive, etc
+nnoremap 'm :media<cr>
+
+mark h ~/
