@@ -3,7 +3,7 @@
 - Standalone:
 ![Preview image 1](preview.jpg)
 
-- Inside Nvim with [fm-nvim](https://github.com/is0n/fm-nvim):
+- Inside Nvim with [fm-nvim](https://github.com/is0n/fm-nvim) (or [vifm.vim](https://github.com/vifm/vifm.vim)):
 ![Preview image 2](fm-nvim.jpg)
 
 ## Installation
