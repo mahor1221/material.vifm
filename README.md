@@ -1,5 +1,5 @@
 # material.vifm
-[Vifm](https://github.com/vifm/vifm/) colorscheme that mimics appearance of [material.vim](https://github.com/kaicataldo/material.vim)/[material.nvim](https://github.com/marko-cerovac/material.nvim)
+[Vifm](https://github.com/vifm/vifm/) colorscheme similar to [material.vim](https://github.com/kaicataldo/material.vim)/[material.nvim](https://github.com/marko-cerovac/material.nvim)
 - Standalone:
 ![Preview image 1](preview.jpg)
 

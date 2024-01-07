@@ -24,16 +24,6 @@ endif
 " remove previous directory double dot indication
 set dotdirs=""
 
-" create a new file with the name passed as argument
-" if the last character of the name is "/" it will create a directory
-command create :
-\|  let $last_char = expand(system('str="%a"; echo "${str: -1}"'))
-\|  if $last_char != '/'
-\|    touch '%a'
-\|  else
-\|    mkdir '%a'
-\|  endif
-
 " toggle vertical split file viewer
 command toggle :
 \|  if layoutis('only')
@@ -43,23 +33,7 @@ command toggle :
 \|    only
 \|  endif
 
-noremap <space> <c-w>w
-noremap <c-b> :toggle<cr>
-noremap R :restart<cr>
-nnoremap a  :create<space>
-nnoremap I  cw<c-a>
-nnoremap A  cw
-
-fileviewer <text/troff>,{*.[1-8]}, man ./%c | col -b
-fileviewer <application/x-bittorrent>.{*.torrent}, dumptorrent -v %c
-fileviewer *.zip,*.jar,*.war,*.ear,*.oxt,*.vsix zip -sf %c
-fileviewer *.tgz,*.gz tar -tzf %c
-fileviewer *.bz2,*.tbz2 tar -tjf %c
-fileviewer *.xz,*.txz tar -tJf %c
-fileviewer *.zst,*.tzst tar -t --zstd -f %c
-fileviewer <application/x-tar>,{*.tar}, tar -tf %c
-fileviewer <application/x-rar>,{*.rar}, unrar v %c
-fileviewer <application/x-7z-compressed>,{*.7z}, 7z l %c
+noremap B :toggle<cr>
 
 " colorful previews
 fileviewer <application/octet-stream>,{*.iso,*.qcow2}
@@ -75,6 +49,18 @@ fileviewer * highlight -O xterm256 -s base16/material-palenight %c
 
 " open with the program passed as argument
 command open :!nohup %a %%c &>/dev/null & disown && exit
+
+
+" create a new file with the name passed as argument
+" if the last character of the name is "/" it will create a directory
+command create :
+\|  let $last_char = expand(system('str="%a"; echo "${str: -1}"'))
+\|  if $last_char == '/'
+\|    mkdir '%a'
+\|  else
+\|    touch '%a'
+\|  endif
+
 
 command cdgit :
 \|  let $file = system('git rev-parse --git-dir 2>/dev/null')
@@ -115,7 +101,6 @@ command! fzfcd :set noquickview
 \|    execute 'cd' fnameescape($file)
 \|  endif
 
-" ------------------------------------------------------------------------------
 " popular keybindings for File Managers (Thunar, windows file explorer, etc)
 nnoremap <c-p> cp
 vnoremap <c-p> cp
@@ -132,11 +117,14 @@ nnoremap <c-h> za
 nnoremap <F2>  :!echo -n %c | xclip -selection clipboard %i<cr>cw<c-u>
 vnoremap <F2>  cw
 
+noremap <space> <c-w>w
+nnoremap a  :create<space>
+noremap R :restart<cr>
+
 nnoremap ,h :help<cr>
 nnoremap ,i :editgitignore<cr>
 nnoremap ,g :editgitconfig<cr>
 nnoremap ,G :edit $HOME/.config/git/config<cr>
-nnoremap ,V :write | edit $MYVIFMRC | restart full<cr>
 
 nnoremap 'g :cdgit<cr>
 nnoremap 'G :cdgithub<cr>

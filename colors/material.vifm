@@ -60,7 +60,7 @@ highlight Socket      cterm=bold,standout ctermfg=Magenta   ctermbg=default
 
 " executable and source code
 highlight {*.sh,*.bash,*.bat,*.dll,*.exe,*.msi,*.cmd,*.run,*.com,*.desktop,
-          \*.diff,*.sum,*.md5,*.sha512,*.sha256,*.ssh,*.ftp}
+          \*.diff,*.sum,*.md5,*.sha,*.sha1,*.sha512,*.sha256,*.ssh,*.ftp}
           \ cterm=none ctermfg=Green ctermbg=default
 highlight {*.[ch]pp,*.c,*.h,*.cc,*.ml,*.mli,*.py,*.pyc,*.pyd,*.pyo,*.php,*.js,
           \*.c++,*.cpp,*.cxx,*.h,*.cc,*.c,*.hs,*.lhs,*.lua,*.jl,*.go,*.ts,
@@ -74,9 +74,10 @@ highlight /^[A-Z_-]+\.[a-zA-Z0-9.]+$/I cterm=none ctermfg=Red ctermbg=default
 highlight /^[A-Z_-]+$/I cterm=none ctermfg=Red ctermbg=default
 highlight /^.[A-Z_-]+$/I cterm=none ctermfg=Red ctermbg=default
 " archive or data within a container which needs a special program to read
-highlight {*.db,*.sql,*.sqlite,*.gpg,*.csv}
+highlight {*.db,*.sql,*.sqlite,*.gpg,*.csv,*.gnumeric,*.xlsx,*.xls,*.blend*,
+          \*.aseprite}
           \ cterm=none ctermfg=Red ctermbg=default
-highlight {*.zip,*.jar,*.war,*.ear,*.oxt,*.apkg,*.vsix,*.tar,*.bz2,*.tbz2,
+highlight {*.zip,*.jar,*.war,*.ear,*.oxt,*.apk,*.vsix,*.tar,*.bz2,*.tbz2,
           \*.tgz,*.gz,*.xz,*.txz,*.deb,*.zst,*.tzst,*.rar,*.iso,*.7zip,*.7z}
           \ cterm=bold ctermfg=Red ctermbg=default
 " plain text
@@ -86,11 +87,11 @@ highlight {*.djvu,*.htm,*.html,*.xhtml,*.md,*[^0-9].[1-9],*.css,*.scss,*.sass,
           \[mM]akefile.*,*.mak,*.mk,}
           \ cterm=none ctermfg=Yellow ctermbg=default
 " document
-highlight {*.pdf,*.epub,*.cbz,
+highlight {*.pdf,*.epub,*.cbz,*.cbr,*.cbt,*.cb7,
           \*.pptx,*.ppt,*.doc,*.docx,*.xls,*.xls[mx],*.mobi}
           \ cterm=bold ctermfg=Yellow ctermbg=default
 " multimedia
-highlight {*.mp3,*.m4a,*.flac,*.ogg}
+highlight {*.mp3,*.m4a,*.flac,*.ogg,*.m3u}
           \ cterm=none ctermfg=Cyan ctermbg=default
 highlight {*.bmp,*.jpg,*.jpeg,*.png,*.gif,*.webp,*.svg,*.avif,*.jxl,*.ico}
           \ cterm=none ctermfg=Magenta ctermbg=default
